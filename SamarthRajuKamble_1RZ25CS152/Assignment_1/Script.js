@@ -1,6 +1,7 @@
 const Tasks = document.getElementById('Inputt');
 const Sub = document.getElementById('SubBut');
 const DisArea = document.getElementById('Diss');
+const ClrBtn = document.getElementById('ClrButton');
 
 Sub.addEventListener('click', (event) => {
 
@@ -25,5 +26,13 @@ Sub.addEventListener('click', (event) => {
     }
     else{
         alert("Please enter some text!");
+    }
+});
+
+ClrBtn.addEventListener('click', (e) => {
+    const ConfDel = confirm("Are you sure, Do you want to delete all the tasks?");
+    if(ConfDel)
+    {
+        DisArea.innerHTML = '';
     }
 });
