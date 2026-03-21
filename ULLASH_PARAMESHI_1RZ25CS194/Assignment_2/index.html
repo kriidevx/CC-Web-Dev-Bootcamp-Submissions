@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My To-Do App</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f4;
+      color: #222;
+      min-height: 100vh;
+      padding: 40px 16px;
+    }
+
+    /* ── Profile card ── */
+    .profile {
+      max-width: 480px;
+      margin: 0 auto 32px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+
+    .profile-top {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .avatar-wrap {
+      flex-shrink: 0;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid #7eb3f5;
+      background: #0a0a1a;
+    }
+
+    .avatar-wrap svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .profile h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .profile .role {
+      font-size: 12px;
+      color: #4f8ef7;
+      font-weight: 500;
+    }
+
+    .profile .bio {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .profile .interests-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #333;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .profile ol {
+      padding-left: 18px;
+      font-size: 13px;
+      color: #555;
+      line-height: 1.7;
+    }
+
+    /* ── App card ── */
+    .app {
+      max-width: 480px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+
+    .app header {
+      margin-bottom: 8px;
+    }
+
+    .app h1 {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .app p.subtitle {
+      font-size: 13px;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    /* ── Input row ── */
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin: 20px 0 24px;
+    }
+
+    .input-row input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-row input:focus {
+      border-color: #4f8ef7;
+    }
+
+    .input-row button {
+      padding: 10px 18px;
+      background: #4f8ef7;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .input-row button:hover {
+      background: #2f6ee0;
+    }
+
+    /* ── Task count ── */
+    .task-count {
+      font-size: 12px;
+      color: #aaa;
+      margin-bottom: 12px;
+    }
+
+    /* ── Task list ── */
+    #task-list {
+      list-style: none;
+    }
+
+    #task-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+
+    #task-list li:last-child {
+      border-bottom: none;
+    }
+
+    #task-list li input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #4f8ef7;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    #task-list li span {
+      flex: 1;
+      transition: color 0.2s;
+    }
+
+    #task-list li.done span {
+      text-decoration: line-through;
+      color: #bbb;
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      color: #ccc;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 0 4px;
+      transition: color 0.2s;
+      flex-shrink: 0;
+    }
+
+    .delete-btn:hover {
+      color: #e74c3c;
+    }
+
+    /* ── Empty state ── */
+    .empty {
+      text-align: center;
+      padding: 24px 0;
+      color: #ccc;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Profile Section -->
+  <section class="profile" aria-label="Author info">
+
+    <div class="profile-top">
+      <!-- Goku Ultra Instinct SVG Avatar -->
+      <div class="avatar-wrap" title="Goku — Ultra Instinct">
+        <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+          <!-- Dark bg -->
+          <rect width="72" height="72" fill="#080814"/>
+          <defs>
+            <clipPath id="cc"><circle cx="36" cy="36" r="35"/></clipPath>
+          </defs>
+          <g clip-path="url(#cc)">
+            <!-- Gi (orange, bottom) -->
+            <ellipse cx="36" cy="68" rx="22" ry="12" fill="#d95f0a"/>
+            <!-- Inner gi / chest band -->
+            <polygon points="30,56 36,62 42,56 40,50 32,50" fill="#162d5c"/>
+            <!-- Neck -->
+            <rect x="32" y="51" width="8" height="7" rx="2" fill="#f2b98e"/>
+
+            <!-- Hair back layer (silver) -->
+            <ellipse cx="36" cy="28" rx="17" ry="16" fill="#b8b8cc"/>
+
+            <!-- Hair spikes — silver/white, pointing up -->
+            <path d="M18 34 Q12 16 17 6  Q22 16 23 28Z"  fill="#d0d0e0"/>
+            <path d="M22 28 Q17 10 23 2  Q27 12 26 22Z"  fill="#dcdcec"/>
+            <path d="M28 22 Q26 6  33 0  Q35 12 32 20Z"  fill="#d4d4e4"/>
+            <path d="M34 18 Q35 1  39 0  Q40 10 38 17Z"  fill="#e8e8f4"/>
+            <path d="M39 20 Q41 4  46 5  Q45 15 43 22Z"  fill="#d4d4e4"/>
+            <path d="M44 26 Q48 10 54 8  Q52 20 48 28Z"  fill="#dcdcec"/>
+            <path d="M48 33 Q53 18 58 17 Q55 28 51 35Z"  fill="#d0d0e0"/>
+
+            <!-- Forehead / front hair base -->
+            <path d="M20 40 Q22 24 36 22 Q50 24 52 40" fill="#c4c4d8"/>
+            <!-- Front hair lock (left) -->
+            <path d="M26 38 Q24 26 30 22 Q30 32 28 38Z" fill="#ccccdc"/>
+
+            <!-- Face -->
+            <ellipse cx="36" cy="40" rx="13" ry="14" fill="#f2b98e"/>
+
+            <!-- Ears -->
+            <ellipse cx="23" cy="40" rx="3"  ry="4"  fill="#eea87a"/>
+            <ellipse cx="49" cy="40" rx="3"  ry="4"  fill="#eea87a"/>
+
+            <!-- Eyebrows — sharp angled, UI calm -->
+            <path d="M25 33 Q28 30 32 32" fill="none" stroke="#6a4a30" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M40 32 Q44 30 47 33" fill="none" stroke="#6a4a30" stroke-width="1.4" stroke-linecap="round"/>
+
+            <!-- Left eye — silver iris -->
+            <ellipse cx="28.5" cy="38" rx="4"   ry="3"   fill="#fff"/>
+            <ellipse cx="28.5" cy="38" rx="2.6" ry="2.6" fill="#9898b0"/>
+            <ellipse cx="28.5" cy="38" rx="1.4" ry="1.4" fill="#404058"/>
+            <circle  cx="29.4" cy="36.8" r="0.7" fill="#fff"/>
+
+            <!-- Right eye — silver iris -->
+            <ellipse cx="43.5" cy="38" rx="4"   ry="3"   fill="#fff"/>
+            <ellipse cx="43.5" cy="38" rx="2.6" ry="2.6" fill="#9898b0"/>
+            <ellipse cx="43.5" cy="38" rx="1.4" ry="1.4" fill="#404058"/>
+            <circle  cx="44.4" cy="36.8" r="0.7" fill="#fff"/>
+
+            <!-- Nose -->
+            <path d="M35 43 Q36 45 37 43" fill="none" stroke="#c8906a" stroke-width="0.8"/>
+
+            <!-- Mouth — calm, slight smile (Ultra Instinct serene) -->
+            <path d="M32 47 Q36 50 40 47" fill="none" stroke="#b87858" stroke-width="1" stroke-linecap="round"/>
+
+            <!-- Silver UI aura wisps at edges -->
+            <path d="M4 36 Q8 28 6 20"  fill="none" stroke="#c8c8e0" stroke-width="1.2" opacity="0.5" stroke-linecap="round"/>
+            <path d="M6 44 Q10 50 8 58" fill="none" stroke="#c8c8e0" stroke-width="0.8" opacity="0.35" stroke-linecap="round"/>
+            <path d="M68 36 Q64 28 66 20" fill="none" stroke="#c8c8e0" stroke-width="1.2" opacity="0.5" stroke-linecap="round"/>
+            <path d="M66 44 Q62 50 64 58" fill="none" stroke="#c8c8e0" stroke-width="0.8" opacity="0.35" stroke-linecap="round"/>
+          </g>
+          <!-- Silver aura border ring -->
+          <circle cx="36" cy="36" r="34" fill="none" stroke="#b4b4cc" stroke-width="2.5"/>
+          <circle cx="36" cy="36" r="31" fill="none" stroke="#e0e0ff" stroke-width="0.6" opacity="0.5"/>
+        </svg>
+      </div>
+
+      <div>
+        <h2>Ullash Parameshi</h2>
+        <span class="role">1st Year · CSE Core · RVCE Bangalore</span>
+      </div>
+    </div>
+
+    <p class="bio">
+      Hi, I'm Ullash Parameshi. I'm a 1st year CSE Core student at RVCE Bangalore
+      with a strong interest in coding. I am from Dasarahalli, Bangalore. I enjoy
+      building tools that bridge the gap between software and practical engineering,
+      and I'm currently looking to connect with others in the tech scene.
+    </p>
+
+    <p class="interests-title">Interests</p>
+    <ol>
+      <li>I love to learn more about coding, master new programming languages and automation.</li>
+      <li>I love to watch anime, read manga and play video games.</li>
+    </ol>
+
+  </section>
+
+  <!-- To-Do App -->
+  <main class="app" aria-label="To-Do application">
+    <header>
+      <h1>My To-Do List</h1>
+      <p class="subtitle">Add tasks, check them off, stay on track.</p>
+    </header>
+
+    <!-- Input row -->
+    <div class="input-row">
+      <input
+        type="text"
+        id="task-input"
+        placeholder="What do you need to do?"
+        maxlength="100"
+        autocomplete="off"
+      />
+      <button onclick="addTask()">Add</button>
+    </div>
+
+    <!-- Live task count -->
+    <p class="task-count" id="task-count">0 tasks</p>
+
+    <!-- Task list -->
+    <ul id="task-list" aria-label="Task list">
+      <li class="empty" id="empty-msg">No tasks yet. Add one above!</li>
+    </ul>
+  </main>
+
+  <script>
+    const input     = document.getElementById('task-input');
+    const list      = document.getElementById('task-list');
+    const countEl   = document.getElementById('task-count');
+    const emptyMsg  = document.getElementById('empty-msg');
+
+    // Add task on Enter key too
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') addTask();
+    });
+
+    function addTask() {
+      const text = input.value.trim();
+      if (!text) return;          // do nothing if input is empty
+
+      // Hide the empty message
+      emptyMsg.style.display = 'none';
+
+      // Create list item
+      const li = document.createElement('li');
+
+      // Checkbox
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.addEventListener('change', function() {
+        li.classList.toggle('done', checkbox.checked);
+        updateCount();
+      });
+
+      // Task text
+      const span = document.createElement('span');
+      span.textContent = text;
+
+      // Delete button
+      const del = document.createElement('button');
+      del.className = 'delete-btn';
+      del.textContent = '✕';
+      del.title = 'Delete task';
+      del.addEventListener('click', function() {
+        li.remove();
+        updateCount();
+        if (list.querySelectorAll('li:not(.empty)').length === 0) {
+          emptyMsg.style.display = '';
+        }
+      });
+
+      li.appendChild(checkbox);
+      li.appendChild(span);
+      li.appendChild(del);
+      list.appendChild(li);
+
+      input.value = '';
+      input.focus();
+      updateCount();
+    }
+
+    function updateCount() {
+      const all  = list.querySelectorAll('li:not(.empty)').length;
+      const done = list.querySelectorAll('li.done').length;
+      countEl.textContent = all === 0
+        ? '0 tasks'
+        : `${all} task${all > 1 ? 's' : ''} — ${done} done`;
+    }
+  </script>
+
+</body>
+</html>
+
