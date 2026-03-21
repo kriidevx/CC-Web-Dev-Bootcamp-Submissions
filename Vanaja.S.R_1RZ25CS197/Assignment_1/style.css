@@ -1,0 +1,127 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                url("https://images.unsplash.com/photo-1498050108023-c5249f4df085");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: rgb(62, 31, 63);
+}
+
+header {
+    background:transparent;
+    color: rgb(60, 223, 229);
+    padding: 15px;
+}
+
+.container {
+    margin: 20px auto;
+    width: 350px;
+    background: rgba(255, 255, 255, 0.9); /* important */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px gray;
+}
+
+input {
+    width: 75%;
+    padding: 8px;
+}
+
+button {
+    padding: 8px;
+    cursor: pointer;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #eee;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+/* Task text */
+.task-text {
+    flex: 1;
+    margin-left: 10px;
+    text-align: left;
+}
+
+/* Completed task */
+.completed {
+    text-decoration: line-through;
+    color: gray;
+}
+
+/* Delete button */
+.delete-btn {
+    background: red;
+    margin-left: 10px;
+}
+
+footer {
+    margin-top: 20px;
+    padding: 10px;
+    background: #ddd;
+}
+
+.avatar {
+    width: 80px;
+    border-radius: 50%;
+    border: 3px solid #4CAF50;
+}
+/* Profile layout (image + text side by side) */
+.profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* Bigger avatar + animation */
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #4CAF50;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    object-fit: cover;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect */
+.avatar:hover {
+    transform: scale(1.1); /* zoom effect */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+/* Text styling */
+.profile-info {
+    text-align: left;
+}
+
+.name {
+    font-size: 18px;
+    margin: 0;
+}
+
+.bio {
+    font-size: 14px;
+    color: #555;
+    margin-top: 5px;
+}
