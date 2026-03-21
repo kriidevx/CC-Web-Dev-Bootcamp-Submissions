@@ -16,13 +16,12 @@ Sub.addEventListener('click', (event) => {
         Para.textContent = TaskText;
         checkboxx.type = 'checkbox';
 
-        //Para.appendChild(Para);
         Para.append(" ");
         Para.appendChild(checkboxx);
 
         DisArea.appendChild(Para);
 
-        //Tasks.value = "";
+        Tasks.value = "";
     }
     else{
         alert("Please enter some text!");
